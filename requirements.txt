@@ -1,0 +1,10 @@
+streamlit
+google-genai
+python-dotenv
+Pillow
+sentence-transformers
+faiss-cpu
+numpy
+torch
+transformers
+huggingface-hub
