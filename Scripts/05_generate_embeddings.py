@@ -3,28 +3,79 @@ import faiss
 import numpy as np
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
+import time
 
 # Load embedding model
 model = SentenceTransformer(
     "paraphrase-multilingual-MiniLM-L12-v2"
 )
 
-# Input chunk file
-input_path = Path(
-    "data/chunked_documents/laws/law_01_page_001_chunks.json"
+# Root chunk folder
+input_root = Path(
+    "data/chunked_documents/laws"
 )
 
-# Load chunks
-with open(input_path, "r", encoding="utf-8") as f:
-    chunks = json.load(f)
+# Output vector DB folder
+output_root = Path(
+    "vector_db"
+)
 
-texts = [chunk["text"] for chunk in chunks]
+output_root.mkdir(
+    parents=True,
+    exist_ok=True
+)
+
+# Find ALL chunk JSON files
+chunk_files = sorted(
+    input_root.glob("*_chunks.json")
+)
+
+# Store all chunks
+all_chunks = []
+
+# Runtime
+start_time = time.time()
+
+print("Loading chunk files...")
+
+# Load all chunk files
+for chunk_path in chunk_files:
+
+    print(f"Loading: {chunk_path.name}")
+
+    with open(
+        chunk_path,
+        "r",
+        encoding="utf-8"
+    ) as f:
+
+        chunks = json.load(f)
+
+        all_chunks.extend(chunks)
+
+print(
+    f"\nTotal chunks loaded: "
+    f"{len(all_chunks)}"
+)
+
+# Extract text only
+texts = [
+    chunk["text"]
+    for chunk in all_chunks
+]
+
+print("\nGenerating embeddings...")
 
 # Generate embeddings
-embeddings = model.encode(texts)
+embeddings = model.encode(
+    texts,
+    show_progress_bar=True
+)
 
 # Convert to numpy float32
-embeddings = np.array(embeddings).astype("float32")
+embeddings = np.array(
+    embeddings
+).astype("float32")
 
 # Create FAISS index
 dimension = embeddings.shape[1]
@@ -34,17 +85,76 @@ index = faiss.IndexFlatL2(dimension)
 # Add embeddings to index
 index.add(embeddings)
 
+print(
+    f"\nFAISS index size: "
+    f"{index.ntotal}"
+)
+
+# -----------------------------
+# SAVE VECTOR DATABASE
+# -----------------------------
+
 # Save FAISS index
-faiss_output = "vector_db/law_01_page_001.index"
+faiss_output = (
+    output_root / "law_01.index"
+)
 
-Path("vector_db").mkdir(parents=True, exist_ok=True)
-
-faiss.write_index(index, faiss_output)
+faiss.write_index(
+    index,
+    str(faiss_output)
+)
 
 # Save metadata
-metadata_output = "vector_db/law_01_page_001_metadata.json"
+metadata_output = (
+    output_root / "law_01_metadata.json"
+)
 
-with open(metadata_output, "w", encoding="utf-8") as f:
-    json.dump(chunks, f, ensure_ascii=False, indent=2)
+with open(
+    metadata_output,
+    "w",
+    encoding="utf-8"
+) as f:
 
-print("Embeddings and FAISS index created successfully.")
+    json.dump(
+        all_chunks,
+        f,
+        ensure_ascii=False,
+        indent=2
+    )
+
+# Total runtime
+elapsed_time = (
+    time.time() - start_time
+)
+
+print("\n========== SUMMARY ==========")
+
+print(
+    f"Chunk Files Loaded : "
+    f"{len(chunk_files)}"
+)
+
+print(
+    f"Total Chunks       : "
+    f"{len(all_chunks)}"
+)
+
+print(
+    f"Embedding Dimension: "
+    f"{dimension}"
+)
+
+print(
+    f"Vector Count       : "
+    f"{index.ntotal}"
+)
+
+print(
+    f"Total Runtime      : "
+    f"{elapsed_time:.2f} seconds"
+)
+
+print(
+    "\nEmbeddings and FAISS "
+    "index created successfully."
+)
