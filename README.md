@@ -1,18 +1,53 @@
 # Khmer Insurance RAG Chatbot
 
-## Project Structure
+Khmer legal and insurance Retrieval-Augmented Generation (RAG) chatbot using:
+
+* Gemini Vision OCR
+* Khmer semantic retrieval
+* FAISS vector search
+* Streamlit frontend
+
+This project processes Khmer legal PDFs into a searchable AI knowledge system.
+
+---
+
+# Current Features
+
+* PDF → image conversion
+* Khmer OCR extraction using Gemini
+* Khmer text cleaning
+* document chunking
+* multilingual embeddings
+* FAISS semantic retrieval
+* Streamlit chatbot UI
+* grounded RAG answering
+* source inspection and retrieval debugging
+
+---
+
+# Tech Stack
+
+* Python 3.11
+* Gemini API
+* Sentence Transformers
+* FAISS
+* Streamlit
+* Pillow
+* NumPy
+
+---
+
+# Project Structure
 
 ```text
 khmer-chatbot/
 │
-├── scripts/
+├── Scripts/
 │   ├── 01_convert_pdf_to_images.py
 │   ├── 02_extract_text_gemini.py
 │   ├── 03_clean_text.py
-│   ├── 04_chunk_text.py
-│   ├── 05_generate_embeddings.py
-│   ├── 06_test_retrieval.py
-│   └── utils.py
+│   ├── 04_chunk_documents.py
+│   └── 05_generate_embeddings.py
 │
 ├── data/
 │   │
@@ -42,136 +77,168 @@ khmer-chatbot/
 │   │       ├── prakas/
 │   │       └── sub_decrees/
 │   │
-│   ├── chunked_documents/
-│   │   ├── guidance/
-│   │   ├── laws/
-│   │   ├── prakas/
-│   │   └── sub_decrees/
-│   │
-│   ├── embeddings/
-│   │
-│   └── evaluation/
+│   └── chunked_documents/
+│       ├── guidance/
+│       ├── laws/
+│       ├── prakas/
+│       └── sub_decrees/
 │
 ├── vector_db/
 │
-├── notebooks/
-│
-├── logs/
-│
+├── app.py
 ├── requirements.txt
 ├── .gitignore
-└── README.md
+├── .env
+├── README.md
+└── .venv
 ```
 
 ---
 
 # Folder Explanations
 
-## `scripts/`
+## `Scripts/`
 
-Contains all pipeline processing scripts.
+Contains the complete data processing pipeline.
 
-### `01_convert_pdf_to_images.py`
+---
 
-Converts PDF pages into image files (`.png`) because all PDFs are treated as image-based documents for consistent Khmer extraction.
+## `01_convert_pdf_to_images.py`
 
-### `02_extract_text_gemini.py`
+Converts PDFs into page images (`.png`) for OCR processing.
 
-Uses Gemini Vision API to extract Khmer and English text from page images.
+Uses:
 
-### `03_clean_text.py`
+* `pdf2image`
+* 400 DPI rendering for better Khmer OCR quality
 
-Cleans extracted OCR text:
+---
 
-* Unicode normalization
-* remove repeated headers/footers
-* remove OCR noise
-* fix formatting
+## `02_extract_text_gemini.py`
 
-### `04_chunk_text.py`
+Performs OCR extraction using Gemini Vision.
 
-Splits cleaned documents into smaller chunks for RAG retrieval while preserving legal sections and clauses.
+Features:
 
-### `05_generate_embeddings.py`
+* Khmer + English extraction
+* retry logic
+* resumable processing
+* automatic skip for completed pages
+* strict OCR prompting
 
-Creates embeddings from chunks and stores them into the vector database.
+Output:
 
-### `06_test_retrieval.py`
+* raw JSON OCR files
 
-Tests retrieval quality using sample queries.
+---
 
-### `utils.py`
+## `03_clean_text.py`
 
-Helper functions shared across scripts.
+Cleans OCR text while preserving Khmer legal structure.
+
+Cleaning includes:
+
+* whitespace normalization
+* line break cleanup
+* formatting cleanup
+
+Minimal cleaning is intentionally used to avoid damaging Khmer legal text.
+
+---
+
+## `04_chunk_documents.py`
+
+Splits cleaned text into smaller RAG chunks.
+
+Features:
+
+* Khmer-safe chunking
+* paragraph-based splitting
+* metadata preservation
+
+Each chunk contains:
+
+* document ID
+* page number
+* chunk ID
+* text
+
+---
+
+## `05_generate_embeddings.py`
+
+Generates multilingual embeddings and creates FAISS vector databases.
+
+Uses:
+
+* `paraphrase-multilingual-MiniLM-L12-v2`
+* FAISS vector indexing
+
+Output:
+
+* `.index`
+* metadata JSON
 
 ---
 
 # `data/`
 
-Main data pipeline directory.
+Main project data directory.
 
 ---
 
 ## `data/source_documents/`
 
-Stores original downloaded PDFs from the ICR/IRC website.
+Stores original Khmer legal PDFs.
 
-Documents are categorized into:
+Categories:
 
-* `laws/`
-* `sub_decrees/`
-* `prakas/`
-* `guidance/`
-* `aml_pf/`
+* laws
+* sub_decrees
+* prakas
+* guidance
 
-These files should NEVER be modified.
+These files should never be modified.
 
 ---
 
 ## `data/page_images/`
 
-Stores generated page images converted from PDFs.
+Stores generated page images.
 
 Example:
 
 ```text
-page_images/prakas/prakas_001/page_001.png
+page_images/laws/law_01/page_001.png
 ```
 
 Used for:
 
-* Gemini OCR extraction
-* debugging extraction problems
-* manual review
+* OCR extraction
+* debugging
+* manual verification
 
 ---
 
 ## `data/extracted_text/raw/`
 
-Stores raw extracted text directly from Gemini.
+Stores raw OCR output from Gemini.
 
 No cleaning is applied here.
 
 Purpose:
 
-* preserve original OCR output
-* debugging OCR mistakes
-* reprocessing if needed
+* preserve original OCR
+* OCR debugging
+* reprocessing
 
 ---
 
 ## `data/extracted_text/cleaned/`
 
-Stores cleaned and normalized text.
+Stores cleaned OCR text.
 
-Cleaning includes:
-
-* Khmer Unicode normalization
-* removing duplicated text
-* formatting cleanup
-* OCR noise removal
-
-This is the version used for chunking.
+This version is used for chunking and embeddings.
 
 ---
 
@@ -179,79 +246,100 @@ This is the version used for chunking.
 
 Stores chunked RAG-ready documents.
 
-Each chunk should contain:
-
-* chunk text
-* document name
-* category
-* page number
-* metadata
-
-These chunks are later embedded into the vector database.
-
----
-
-## `data/embeddings/`
-
-Stores generated embeddings or intermediate embedding files.
-
----
-
-## `data/evaluation/`
-
-Contains evaluation datasets and retrieval testing results.
-
-Examples:
-
-* gold Q&A pairs
-* retrieval benchmarks
-* hallucination audit logs
+Each file contains structured chunks with metadata.
 
 ---
 
 # `vector_db/`
 
-Stores vector database files (Qdrant, FAISS, ChromaDB, etc.).
-
-Used for semantic retrieval during chatbot querying.
-
----
-
-# `notebooks/`
-
-Jupyter notebooks for:
-
-* experiments
-* testing OCR quality
-* embedding comparison
-* debugging
-
----
-
-# `requirements.txt`
-
-Python dependencies for the project.
+Stores FAISS vector databases and metadata.
 
 Example:
 
-* pymupdf
-* pdf2image
-* google-generativeai
-* qdrant-client
-* sentence-transformers
+```text
+vector_db/
+├── law_01.index
+└── law_01_metadata.json
+```
+
+Used for:
+
+* semantic retrieval
+* RAG search
+* chatbot grounding
 
 ---
 
-# `.gitignore`
+# Environment Setup
 
-Defines files/folders ignored by Git.
+## 1. Clone Repository
 
-Usually excludes:
+```bash
+git clone <repository-url>
+cd khmer-chatbot
+```
 
-* generated images
-* embeddings
-* vector DB files
-* environment secrets
+---
+
+## 2. Create Virtual Environment
+
+```bash
+python3.11 -m venv .venv
+```
+
+---
+
+## 3. Activate Virtual Environment
+
+### macOS / Linux
+
+```bash
+source .venv/bin/activate
+```
+
+### Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+---
+
+## 4. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 5. Create `.env`
+
+Create a `.env` file:
+
+```env
+GEMINI_API_KEY=YOUR_API_KEY_HERE
+```
+
+---
+
+# Requirements
+
+Current dependencies:
+
+```text
+streamlit
+google-genai
+python-dotenv
+Pillow
+sentence-transformers
+faiss-cpu
+numpy
+torch
+transformers
+huggingface-hub
+pdf2image
+```
 
 ---
 
@@ -270,21 +358,100 @@ Chunk Documents
       ↓
 Generate Embeddings
       ↓
-Store in Vector Database
+Store in FAISS Vector Database
       ↓
 RAG Chatbot Retrieval
 ```
 
 ---
 
-# Current Project Scope
+# Pipeline Execution Order
 
-This project currently focuses ONLY on:
+Run scripts in this exact order.
 
-* PDFs from ICR/IRC website
-* Khmer legal and insurance documents
-* image-first extraction pipeline
-* Gemini Vision OCR
+---
+
+## Step 1 — Convert PDFs to Images
+
+```bash
+python Scripts/01_convert_pdf_to_images.py
+```
+
+---
+
+## Step 2 — OCR Extraction
+
+```bash
+python Scripts/02_extract_text_gemini.py
+```
+
+This is the slowest stage because it uses Gemini Vision OCR.
+
+Features:
+
+* retry logic
+* resumable processing
+* skip completed pages
+
+---
+
+## Step 3 — Clean OCR Text
+
+```bash
+python Scripts/03_clean_text.py
+```
+
+---
+
+## Step 4 — Chunk Documents
+
+```bash
+python Scripts/04_chunk_documents.py
+```
+
+---
+
+## Step 5 — Generate Embeddings
+
+```bash
+python Scripts/05_generate_embeddings.py
+```
+
+---
+
+# Run Chatbot UI
+
+Start the Streamlit frontend:
+
+```bash
+streamlit run app.py
+```
+
+Open:
+
+```text
+http://localhost:8501
+```
+
+Features:
+
+* Khmer question answering
+* semantic retrieval
+* retrieved source inspection
+* grounded AI responses
+* RAG debugging
+
+---
+
+# Current Scope
+
+This project currently focuses only on:
+
+* Khmer legal documents
+* insurance regulations
+* image-based PDFs
+* Khmer semantic retrieval
+* Gemini OCR pipeline
 
 Document categories:
 
@@ -293,26 +460,26 @@ Document categories:
 * Prakas
 * Guidance
 
-## Dataset Structure
+---
 
-This repository includes all source PDF documents inside the `data/source_documents/` directory with consistent folder placement and file naming conventions.
+# Notes
 
-Only the original source documents are tracked in the repository.
+* OCR quality depends heavily on PDF quality.
+* 400 DPI is currently used for better Khmer OCR performance.
+* Gemini Vision OCR is the primary bottleneck of the pipeline.
+* Streamlit frontend replaces terminal-based retrieval testing.
 
-Other directories such as:
-- `page_images/`
-- `extracted_text/`
-- `chunked_documents/`
-- `embeddings/`
-- `vector_db/`
+---
 
-are generated locally by running the pipeline scripts.
+# Future Improvements
 
-Contributors can reproduce all generated data locally using the scripts provided in the `scripts/` directory.
+Planned improvements:
 
-This focused scope helps maintain:
-
-* cleaner data
-* more reliable retrieval
-* easier evaluation
-* manageable internship scope
+* multi-document retrieval
+* citation highlighting
+* article-level chunking
+* chat memory
+* reranking
+* OCR evaluation tools
+* better Khmer embeddings
+* production deployment
