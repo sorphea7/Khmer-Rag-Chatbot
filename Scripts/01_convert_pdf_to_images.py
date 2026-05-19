@@ -10,6 +10,11 @@ output_root = Path("data/page_images")
 # Find all PDFs recursively
 pdf_files = source_root.rglob("*.pdf")
 
+# Counters
+processed_pdfs = 0
+skipped_pdfs = 0
+total_pages = 0
+
 for pdf_path in pdf_files:
 
     # Example:
@@ -27,6 +32,7 @@ for pdf_path in pdf_files:
 
     if existing_images:
         print(f"Skipping already processed: {pdf_name}")
+        skipped_pdfs += 1
         continue
 
     print(f"\nProcessing: {pdf_path}")
@@ -41,6 +47,15 @@ for pdf_path in pdf_files:
 
         page.save(page_path, "PNG")
 
-    print(f"Completed: {pdf_name}")
+    page_count = len(pages)
 
-print("\nAll PDFs converted successfully.")
+    processed_pdfs += 1
+    total_pages += page_count
+
+    print(f"Completed: {pdf_name} ({page_count} pages)")
+
+print("\n========== SUMMARY ==========")
+print(f"Processed PDFs : {processed_pdfs}")
+print(f"Skipped PDFs   : {skipped_pdfs}")
+print(f"Total PNG pages: {total_pages}")
+print("All PDFs converted successfully.")
