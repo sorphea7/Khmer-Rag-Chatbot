@@ -3,24 +3,24 @@ import re
 from pathlib import Path
 import time
 
-# Input folder
-input_folder = Path(
-    "data/extracted_text/raw/laws"
+# Root input folder
+input_root = Path(
+    "data/extracted_text/raw"
 )
 
-# Output folder
-output_folder = Path(
-    "data/extracted_text/cleaned/laws"
+# Root output folder
+output_root = Path(
+    "data/extracted_text/cleaned"
 )
 
-output_folder.mkdir(
+output_root.mkdir(
     parents=True,
     exist_ok=True
 )
 
-# Find all raw JSON files
+# Find ALL JSON files recursively
 json_files = sorted(
-    input_folder.glob("*.json")
+    input_root.rglob("*.json")
 )
 
 # Counters
@@ -33,24 +33,35 @@ start_time = time.time()
 for input_path in json_files:
 
     # Example:
-    # law_01_page_001.json
-    file_name = input_path.name
+    # laws/law_01_page_001.json
+    relative_path = input_path.relative_to(
+        input_root
+    )
 
-    # Output path
-    output_path = output_folder / file_name
+    # Preserve folder structure
+    output_path = output_root / relative_path
+
+    # Create parent folders
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    # File name only
+    file_name = input_path.name
 
     # Skip existing cleaned file
     if output_path.exists():
 
         print(
             f"Skipping already cleaned: "
-            f"{file_name}"
+            f"{relative_path}"
         )
 
         skipped_files += 1
         continue
 
-    print(f"\nCleaning: {file_name}")
+    print(f"\nCleaning: {relative_path}")
 
     # Load raw JSON
     with open(
@@ -118,7 +129,7 @@ for input_path in json_files:
 
     processed_files += 1
 
-    print(f"Completed: {file_name}")
+    print(f"Completed: {relative_path}")
 
 # Total runtime
 elapsed_time = (
