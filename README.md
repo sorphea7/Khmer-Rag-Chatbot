@@ -17,14 +17,12 @@ khmer-chatbot/
 ├── data/
 │   │
 │   ├── source_documents/
-│   │   ├── aml_pf/
 │   │   ├── guidance/
 │   │   ├── laws/
 │   │   ├── prakas/
 │   │   └── sub_decrees/
 │   │
 │   ├── page_images/
-│   │   ├── aml_pf/
 │   │   ├── guidance/
 │   │   ├── laws/
 │   │   ├── prakas/
@@ -33,21 +31,18 @@ khmer-chatbot/
 │   ├── extracted_text/
 │   │   │
 │   │   ├── raw/
-│   │   │   ├── aml_pf/
 │   │   │   ├── guidance/
 │   │   │   ├── laws/
 │   │   │   ├── prakas/
 │   │   │   └── sub_decrees/
 │   │   │
 │   │   └── cleaned/
-│   │       ├── aml_pf/
 │   │       ├── guidance/
 │   │       ├── laws/
 │   │       ├── prakas/
 │   │       └── sub_decrees/
 │   │
 │   ├── chunked_documents/
-│   │   ├── aml_pf/
 │   │   ├── guidance/
 │   │   ├── laws/
 │   │   ├── prakas/
@@ -297,7 +292,23 @@ Document categories:
 * Sub Decrees
 * Prakas
 * Guidance
-* AML/PF
+
+## Dataset Structure
+
+This repository includes all source PDF documents inside the `data/source_documents/` directory with consistent folder placement and file naming conventions.
+
+Only the original source documents are tracked in the repository.
+
+Other directories such as:
+- `page_images/`
+- `extracted_text/`
+- `chunked_documents/`
+- `embeddings/`
+- `vector_db/`
+
+are generated locally by running the pipeline scripts.
+
+Contributors can reproduce all generated data locally using the scripts provided in the `scripts/` directory.
 
 This focused scope helps maintain:
 
