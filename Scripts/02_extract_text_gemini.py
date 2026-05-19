@@ -1,4 +1,4 @@
-import google.generativeai as genai
+from google import genai
 from PIL import Image
 from pathlib import Path
 from dotenv import load_dotenv
@@ -8,16 +8,11 @@ import json
 # Load environment variables
 load_dotenv()
 
-# Configure Gemini
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# Create Gemini client
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Load Gemini model
-model = genai.GenerativeModel("gemini-1.5-flash")
-
-# Input image
+# Load image
 image_path = "data/page_images/laws/law_01/page_001.png"
-
-# Open image
 image = Image.open(image_path)
 
 # Prompt
@@ -32,8 +27,11 @@ Rules:
 - Output only extracted text
 """
 
-# Generate response
-response = model.generate_content([prompt, image])
+# Generate content
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=[prompt, image]
+)
 
 # Extract text
 extracted_text = response.text
