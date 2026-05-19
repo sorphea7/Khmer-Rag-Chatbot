@@ -102,6 +102,10 @@ for image_path in image_files:
                 }
             )
 
+            print("\nUsage Metadata:")
+            print(response.usage_metadata)
+            print()
+
             extracted_text = response.text
 
             # Save JSON immediately
