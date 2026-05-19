@@ -22,6 +22,13 @@ for pdf_path in pdf_files:
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Skip if already converted
+    existing_images = list(output_dir.glob("*.png"))
+
+    if existing_images:
+        print(f"Skipping already processed: {pdf_name}")
+        continue
+
     print(f"\nProcessing: {pdf_path}")
 
     # Convert PDF pages to images
