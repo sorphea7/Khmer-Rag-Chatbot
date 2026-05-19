@@ -37,8 +37,8 @@ for pdf_path in pdf_files:
 
     print(f"\nProcessing: {pdf_path}")
 
-    # Convert PDF pages to images
-    pages = convert_from_path(pdf_path, dpi=300)
+    # Convert PDF pages to images (400 dpi is higher quality than 300 dpi)
+    pages = convert_from_path(pdf_path, dpi=400)
 
     # Save pages
     for i, page in enumerate(pages):
