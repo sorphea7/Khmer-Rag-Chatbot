@@ -33,3 +33,6 @@ __pycache__/
 # Environment
 .env
 .venv/
+
+# macOS, discard and remove this if see
+.DS_Store
