@@ -1,7 +1,7 @@
 streamlit
 google-genai
 python-dotenv
-Pillow
+pillow
 sentence-transformers
 faiss-cpu
 numpy
