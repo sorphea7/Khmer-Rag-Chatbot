@@ -122,16 +122,15 @@ data/document_metadata.json
 This file stores document-level metadata such as:
 - document name
 - document type
-- release date
-- language
+- document release date
+- document language
 
 Example:
 
 ```json
 {
   "law_01": {
-    "document_name_en": "Electronic Commerce Law",
-    "document_name_kh": "ច្បាប់ស្តីពីពាណិជ្ជកម្មតាមប្រព័ន្ធអេឡិចត្រូនិក",
+    "document_name": "ច្បាប់ស្តីពីពាណិជ្ជកម្មតាមប្រព័ន្ធអេឡិចត្រូនិក",
     "document_type": "law",
     "release_date": "2019-11-02",
     "language": "kh-en"
