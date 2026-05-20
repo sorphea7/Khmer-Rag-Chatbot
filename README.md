@@ -48,6 +48,7 @@ khmer-chatbot/
 │   ├── 03_clean_text.py
 │   ├── 04_chunk_documents.py
 │   └── 05_generate_embeddings.py
+│   └── utils.py
 │
 ├── data/
 │   │
@@ -178,6 +179,29 @@ Output:
 
 * `.index`
 * metadata JSON
+
+---
+
+## `utils.py`
+
+Stores shared helper functions used across multiple scripts.
+
+This file is reserved for reusable utilities such as:
+
+* retry handling
+* JSON save/load helpers
+* folder creation helpers
+* runtime formatting
+* OCR helper functions
+* logging utilities
+
+Utilities are added gradually as the project grows to avoid unnecessary early abstraction.
+
+The goal of `utils.py` is to improve:
+
+* code reusability
+* maintainability
+* cleaner pipeline scripts
 
 ---
 
