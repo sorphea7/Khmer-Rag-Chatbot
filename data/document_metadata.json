@@ -1,0 +1,50 @@
+{
+  "law_01": {
+    "document_name": "Electronic Commerce Law",
+    "document_type": "law",
+    "release_date": "2022-10-30",
+    "language": "kh"
+  },
+
+  "law_02": {
+    "document_name": "Consumer Protection Law",
+    "document_type": "law",
+    "release_date": "2022-10-30",
+    "language": "kh"
+  },
+
+  "law_03": {
+    "document_name": "The Law on the Organization and Functioning of the Non-Bank Financial Services Authority",
+    "document_type": "law",
+    "release_date": "2021-11-08",
+    "language": "en"
+  },
+
+  "law_04": {
+    "document_name": "Law on Insurance",
+    "document_type": "law",
+    "release_date": "2021-11-02",
+    "language": "en"
+  },
+
+  "sub_decree_01": {
+    "document_name": "put file name here",
+    "document_type": "sub_decree",
+    "release_date": "YYYY-MM-DD",
+    "language": "kh or en"
+  },
+
+  "prakas_01": {
+    "document_name": "put file name here",
+    "document_type": "prakas",
+    "release_date": "YYYY-MM-DD",
+    "language": "kh or en"
+  },
+
+  "guidance_01": {
+    "document_name": "put file name here",
+    "document_type": "guidance",
+    "release_date": "YYYY-MM-DD",
+    "language": "kh or en"
+  }
+}
