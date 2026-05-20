@@ -174,7 +174,8 @@ Question:
             try:
 
                 response = client.models.generate_content(
-                    model="gemini-3-flash-preview",
+                    ## change to different model using for answering question which is cheaper.
+                    model="gemini-2.5-flash",
                     contents=prompt,
                     config={
                         "temperature": 0
