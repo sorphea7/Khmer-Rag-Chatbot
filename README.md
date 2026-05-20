@@ -299,7 +299,7 @@ Used for:
 ## 1. Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:sorphea7/Khmer-Rag-Insurance-Chatbot.git
 cd khmer-chatbot
 ```
 

@@ -6,51 +6,94 @@ import os
 import json
 import time
 
-# Load environment variables
+# =====================================================
+# LOAD ENVIRONMENT VARIABLES
+# =====================================================
+
 load_dotenv()
 
-# Create Gemini client
+# =====================================================
+# GEMINI CLIENT
+# =====================================================
+
 client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )
 
-# Input folder (ONE PDF ONLY)
-image_folder = Path(
-    "data/page_images/laws/law_01"
+# =====================================================
+# ROOT INPUT FOLDER
+# =====================================================
+
+input_root = Path(
+    "data/page_images"
 )
 
-# Output folder
-output_folder = Path(
-    "data/extracted_text/raw/laws"
+# =====================================================
+# ROOT OUTPUT FOLDER
+# =====================================================
+
+output_root = Path(
+    "data/extracted_text/raw"
 )
 
-output_folder.mkdir(
+output_root.mkdir(
     parents=True,
     exist_ok=True
 )
 
-# Simple OCR prompt
+# =====================================================
+# OCR PROMPT
+# =====================================================
+
 prompt = """
 Just read the image and write the text back exactly. Do not change anything.
 """
 
-# Find all PNG pages
+# =====================================================
+# FIND ALL PNG FILES RECURSIVELY
+# =====================================================
+
 image_files = sorted(
-    image_folder.glob("*.png")
+    input_root.rglob("*.png")
 )
 
-# Counters
+# =====================================================
+# COUNTERS
+# =====================================================
+
 processed_pages = 0
 skipped_pages = 0
 failed_pages = 0
 
-# Total runtime
+# =====================================================
+# TOTAL RUNTIME
+# =====================================================
+
 start_time = time.time()
+
+# =====================================================
+# PROCESS ALL PAGES
+# =====================================================
 
 for image_path in image_files:
 
     # Example:
-    # page_001.png
+    # data/page_images/laws/law_01/page_001.png
+
+    relative_path = image_path.relative_to(
+        input_root
+    )
+
+    # Category:
+    # laws
+    category = relative_path.parts[0]
+
+    # Folder:
+    # law_01
+    document_id = relative_path.parts[1]
+
+    # Filename:
+    # page_001
     page_name = image_path.stem
 
     # Extract page number
@@ -58,25 +101,47 @@ for image_path in image_files:
         page_name.split("_")[1]
     )
 
-    # Output JSON path
-    output_path = output_folder / (
-        f"law_01_{page_name}.json"
+    # =====================================================
+    # OUTPUT PATH
+    # =====================================================
+
+    output_folder = (
+        output_root / category
     )
 
-    # Skip existing pages
+    output_folder.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    output_path = (
+        output_folder /
+        f"{document_id}_{page_name}.json"
+    )
+
+    # =====================================================
+    # SKIP EXISTING FILES
+    # =====================================================
+
     if output_path.exists():
 
         print(
             f"Skipping already processed: "
-            f"{page_name}"
+            f"{document_id} - {page_name}"
         )
 
         skipped_pages += 1
         continue
 
-    print(f"\nProcessing: {page_name}")
+    # =====================================================
+    # PROCESS PAGE
+    # =====================================================
 
-    # Per-page timer
+    print(
+        f"\nProcessing: "
+        f"{document_id} - {page_name}"
+    )
+
     page_start_time = time.time()
 
     # Open image
@@ -88,12 +153,18 @@ for image_path in image_files:
 
     success = False
 
-    # Retry SAME PAGE until success
+    # =====================================================
+    # RETRY SAME PAGE UNTIL SUCCESS
+    # =====================================================
+
     while retry_count < max_retries:
 
         try:
 
-            # Gemini OCR
+            # =====================================================
+            # GEMINI OCR
+            # =====================================================
+
             response = client.models.generate_content(
                 model="gemini-3-flash-preview",
                 contents=[prompt, image],
@@ -102,13 +173,20 @@ for image_path in image_files:
                 }
             )
 
+            # =====================================================
+            # USAGE METADATA
+            # =====================================================
+
             print("\nUsage Metadata:")
             print(response.usage_metadata)
             print()
 
             extracted_text = response.text
 
-            # Save JSON immediately
+            # =====================================================
+            # SAVE JSON IMMEDIATELY
+            # =====================================================
+
             with open(
                 output_path,
                 "w",
@@ -117,7 +195,7 @@ for image_path in image_files:
 
                 json.dump(
                     {
-                        "document_id": "law_01",
+                        "document_id": document_id,
                         "page": page_number,
                         "raw_text": extracted_text
                     },
@@ -133,7 +211,10 @@ for image_path in image_files:
 
             retry_count += 1
 
-            # Exponential backoff
+            # =====================================================
+            # EXPONENTIAL BACKOFF
+            # =====================================================
+
             wait_time = min(
                 15 * retry_count,
                 120
@@ -141,6 +222,7 @@ for image_path in image_files:
 
             print(
                 f"Error processing "
+                f"{document_id} - "
                 f"{page_name}: {e}"
             )
 
@@ -153,11 +235,15 @@ for image_path in image_files:
 
             time.sleep(wait_time)
 
-    # If page failed after all retries
+    # =====================================================
+    # PAGE FAILED
+    # =====================================================
+
     if not success:
 
         print(
             f"Failed permanently: "
+            f"{document_id} - "
             f"{page_name}"
         )
 
@@ -166,20 +252,46 @@ for image_path in image_files:
 
     processed_pages += 1
 
-    # Per-page runtime
+    # =====================================================
+    # PAGE RUNTIME
+    # =====================================================
+
     page_elapsed = (
         time.time() - page_start_time
     )
 
     print(
-        f"Completed: {page_name} "
+        f"Completed: "
+        f"{document_id} - "
+        f"{page_name} "
         f"({page_elapsed:.2f}s)"
     )
 
-# Total runtime
+    # =====================================================
+    # OPTIONAL RATE LIMIT SAFETY
+    # =====================================================
+
+    # WARNING:
+    # Uncomment this only if requests become
+    # too fast and start hitting RPM limits.
+    #
+    # Current OCR processing is already slow
+    # enough naturally (~30–60s per page),
+    # so extra sleeping is usually unnecessary.
+    #
+    # time.sleep(5)
+
+# =====================================================
+# TOTAL RUNTIME
+# =====================================================
+
 elapsed_time = (
     time.time() - start_time
 )
+
+# =====================================================
+# SUMMARY
+# =====================================================
 
 print("\n========== SUMMARY ==========")
 
