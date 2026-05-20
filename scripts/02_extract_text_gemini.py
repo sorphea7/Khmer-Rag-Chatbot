@@ -2,6 +2,7 @@ from google import genai
 from PIL import Image
 from pathlib import Path
 from dotenv import load_dotenv
+import concurrent.futures
 import os
 import json
 import time
@@ -70,6 +71,20 @@ failed_pages = 0
 # =====================================================
 
 start_time = time.time()
+
+# =====================================================
+# GEMINI OCR FUNCTION
+# =====================================================
+
+def generate_ocr_response(image):
+
+    return client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=[prompt, image],
+        config={
+            "temperature": 0
+        }
+    )
 
 # =====================================================
 # PROCESS ALL PAGES
@@ -165,13 +180,41 @@ for image_path in image_files:
             # GEMINI OCR
             # =====================================================
 
-            response = client.models.generate_content(
-                model="gemini-3-flash-preview",
-                contents=[prompt, image],
-                config={
-                    "temperature": 0
-                }
+            print("Sending Gemini request...")
+
+            executor = concurrent.futures.ThreadPoolExecutor()
+
+            future = executor.submit(
+                generate_ocr_response,
+                image
             )
+
+            try:
+
+                response = future.result(
+                    timeout=100
+                )
+
+            except concurrent.futures.TimeoutError:
+
+                print(
+                    f"Timeout after 100 seconds: "
+                    f"{document_id} - {page_name}"
+                )
+
+                print(
+                    "Skipping page..."
+                )
+
+                future.cancel()
+                executor.shutdown(wait=False)
+
+                executor._threads.clear()
+                concurrent.futures.thread._threads_queues.clear()
+
+                success = False
+
+                break
 
             # =====================================================
             # USAGE METADATA
@@ -318,3 +361,5 @@ print(
 print(
     "OCR extraction completed successfully."
 )
+
+os._exit(0)
