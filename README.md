@@ -37,17 +37,27 @@ This project processes Khmer legal PDFs into a searchable AI knowledge system.
 
 ---
 
+# Recommended Python Version
+
+Python 3.11 is recommended for:
+- FAISS compatibility
+- stable dependency installation
+- Streamlit support
+- sentence-transformers compatibility
+
+---
+
 # Project Structure
 
 ```text
-khmer-chatbot/
+Khmer-Rag-Insurance-Chatbot/
 │
 ├── scripts/
 │   ├── 01_convert_pdf_to_images.py
 │   ├── 02_extract_text_gemini.py
 │   ├── 03_clean_text.py
 │   ├── 04_chunk_documents.py
-│   └── 05_generate_embeddings.py
+│   ├── 05_generate_embeddings.py
 │   └── utils.py
 │
 ├── data/
@@ -63,7 +73,7 @@ khmer-chatbot/
 │   │   ├── laws/
 │   │   ├── prakas/
 │   │   └── sub_decrees/
-│   ├
+│   │
 │   ├── evaluation/
 │   │
 │   ├── extracted_text/
@@ -80,21 +90,60 @@ khmer-chatbot/
 │   │       ├── prakas/
 │   │       └── sub_decrees/
 │   │
-│   └── chunked_documents/
-│       ├── guidance/
-│       ├── laws/
-│       ├── prakas/
-│       └── sub_decrees/
+│   ├── chunked_documents/
+│   │   ├── guidance/
+│   │   ├── laws/
+│   │   ├── prakas/
+│   │   └── sub_decrees/
+│   │
+│   └── document_metadata.json
 │
 ├── vector_db/
+│   ├── *.index
+│   └── *_metadata.json
 │
 ├── app.py
 ├── requirements.txt
 ├── .gitignore
 ├── .env
-├── README.md
-└── .venv
+└── README.md
 ```
+
+---
+
+# Metadata System
+
+The project uses a centralized metadata registry:
+
+```text
+data/document_metadata.json
+```
+
+This file stores document-level metadata such as:
+- document name
+- document type
+- release date
+- language
+
+Example:
+
+```json
+{
+  "law_01": {
+    "document_name_en": "Electronic Commerce Law",
+    "document_name_kh": "ច្បាប់ស្តីពីពាណិជ្ជកម្មតាមប្រព័ន្ធអេឡិចត្រូនិក",
+    "document_type": "law",
+    "release_date": "2019-11-02",
+    "language": "kh-en"
+  }
+}
+```
+
+Metadata is later attached to chunked documents for:
+- retrieval context
+- source attribution
+- citations
+- future filtering support
 
 ---
 
@@ -329,14 +378,18 @@ Used for:
 
 ## 1. Clone Repository
 
+Run from any directory where you want the project folder to be created.
+
 ```bash
-git clone git@github.com:sorphea7/Khmer-Rag-Insurance-Chatbot.git
-cd khmer-chatbot
+git clone https://github.com/sorphea7/Khmer-Rag-Insurance-Chatbot.git
+cd Khmer-Rag-Insurance-Chatbot
 ```
 
 ---
 
 ## 2. Create Virtual Environment
+
+Run from the project root directory.
 
 ```bash
 python3.11 -m venv .venv
@@ -346,21 +399,56 @@ python3.11 -m venv .venv
 
 ## 3. Activate Virtual Environment
 
-### macOS / Linux
+This project uses:
+- VSCode
+- zsh / oh-my-zsh terminal
+- WSL for Windows users
+
+Use the following command inside the VSCode terminal:
 
 ```bash
 source .venv/bin/activate
 ```
 
-### Windows
+If successful, terminal should display:
 
-```bash
-.venv\scripts\activate
+```text
+(.venv)
 ```
 
 ---
 
-## 4. Install Dependencies
+## 4. Upgrade pip
+
+```bash
+pip install --upgrade pip
+```
+
+---
+
+## 5. Install Poppler
+
+Poppler is required for:
+- `pdf2image`
+- PDF page conversion
+
+### macOS
+
+```bash
+brew install poppler
+```
+
+### Ubuntu / WSL
+
+```bash
+sudo apt install poppler-utils
+```
+
+---
+
+## 6. Install Python Dependencies
+
+Install all project dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -368,9 +456,9 @@ pip install -r requirements.txt
 
 ---
 
-## 5. Create `.env`
+## 7. Create `.env`
 
-Create a `.env` file:
+Create a `.env` file in the project root directory:
 
 ```env
 GEMINI_API_KEY=YOUR_API_KEY_HERE
@@ -378,7 +466,7 @@ GEMINI_API_KEY=YOUR_API_KEY_HERE
 
 ---
 
-# Requirements
+# requirements.txt
 
 Current dependencies:
 
