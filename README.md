@@ -63,6 +63,8 @@ khmer-chatbot/
 │   │   ├── laws/
 │   │   ├── prakas/
 │   │   └── sub_decrees/
+│   ├
+│   ├── evaluation/
 │   │
 │   ├── extracted_text/
 │   │   │
@@ -241,6 +243,35 @@ Used for:
 * OCR extraction
 * debugging
 * manual verification
+
+---
+
+## `data/evaluation/`
+
+Stores evaluation datasets, testing logs, and quality validation files.
+
+### Purpose
+
+- OCR quality validation
+- retrieval quality testing
+- hallucination detection
+- RAG answer evaluation
+- semantic search benchmarking
+
+This folder is used to systematically improve:
+
+- OCR accuracy
+- retrieval precision
+- grounded answer quality
+
+### Example Evaluation Areas
+
+- Khmer OCR comparison
+- expected retrieval results
+- chatbot answer validation
+- hallucination analysis
+
+The evaluation system is expanded gradually as the project matures.
 
 ---
 
