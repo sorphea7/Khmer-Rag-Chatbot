@@ -42,7 +42,7 @@ This project processes Khmer legal PDFs into a searchable AI knowledge system.
 ```text
 khmer-chatbot/
 │
-├── Scripts/
+├── scripts/
 │   ├── 01_convert_pdf_to_images.py
 │   ├── 02_extract_text_gemini.py
 │   ├── 03_clean_text.py
@@ -100,7 +100,7 @@ khmer-chatbot/
 
 # Folder Explanations
 
-## `Scripts/`
+## `scripts/`
 
 Contains the complete data processing pipeline.
 
@@ -355,7 +355,7 @@ source .venv/bin/activate
 ### Windows
 
 ```bash
-.venv\Scripts\activate
+.venv\scripts\activate
 ```
 
 ---
@@ -429,7 +429,7 @@ Run scripts in this exact order.
 ## Step 1 — Convert PDFs to Images
 
 ```bash
-python Scripts/01_convert_pdf_to_images.py
+python scripts/01_convert_pdf_to_images.py
 ```
 
 ---
@@ -437,7 +437,7 @@ python Scripts/01_convert_pdf_to_images.py
 ## Step 2 — OCR Extraction
 
 ```bash
-python Scripts/02_extract_text_gemini.py
+python scripts/02_extract_text_gemini.py
 ```
 
 This is the slowest stage because it uses Gemini Vision OCR.
@@ -453,7 +453,7 @@ Features:
 ## Step 3 — Clean OCR Text
 
 ```bash
-python Scripts/03_clean_text.py
+python scripts/03_clean_text.py
 ```
 
 ---
@@ -461,7 +461,7 @@ python Scripts/03_clean_text.py
 ## Step 4 — Chunk Documents
 
 ```bash
-python Scripts/04_chunk_documents.py
+python scripts/04_chunk_documents.py
 ```
 
 ---
@@ -469,7 +469,7 @@ python Scripts/04_chunk_documents.py
 ## Step 5 — Generate Embeddings
 
 ```bash
-python Scripts/05_generate_embeddings.py
+python scripts/05_generate_embeddings.py
 ```
 
 ---
