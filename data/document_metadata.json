@@ -28,22 +28,42 @@
   },
 
   "sub_decree_01": {
-    "document_name": "put file name here",
+    "document_name": "Sub-Decree on Microinsurance",
     "document_type": "sub_decree",
-    "release_date": "YYYY-MM-DD",
-    "language": "kh or en"
+    "release_date": "2025-01-10",
+    "language": "kh"
   },
 
-  "prakas_01": {
-    "document_name": "put file name here",
-    "document_type": "prakas",
-    "release_date": "YYYY-MM-DD",
-    "language": "kh or en"
+  "sub_decree_02": {
+    "document_name": "Sub-Decree on the Uniform, Identification Insignia, and Rank Insignia of Insurance Inspection Officers",
+    "document_type": "sub_decree",
+    "release_date": "2024-08-19",
+    "language": "kh"
+  },
+
+  "sub_decree_03": {
+    "document_name": "Sub-Decree on Insurance",
+    "document_type": "sub_decree",
+    "release_date": "2022-01-03",
+    "language": "en"
+  },
+   "sub_decree_04": {
+    "document_name": "Sub-Decree No. 113 ANKr.BK dated 14 July 2021 on the Organization and Functioning of Subordinate Units under the Non-Bank Financial Services Authority",
+    "document_type": "sub_decree",
+    "release_date": "2021-01-08",
+    "language": "kh"
   },
 
   "guidance_01": {
     "document_name": "put file name here",
     "document_type": "guidance",
+    "release_date": "YYYY-MM-DD",
+    "language": "kh or en"
+  },
+
+   "prakas_01": {
+    "document_name": "put file name here",
+    "document_type": "prakas",
     "release_date": "YYYY-MM-DD",
     "language": "kh or en"
   }
