@@ -103,6 +103,7 @@
     "language": "kh"  
   },
 
+
   
   "guidance_08": {
     "document_name": "Instruction on the Required Solvency Guarantee Cash Account of Insurance Companies",
@@ -169,9 +170,177 @@
   },
 
    "prakas_01": {
-    "document_name": "put file name here",
+    "document_name": "Prakas on the Public Disclosure of Annual Reports of Insurance Companies",
     "document_type": "prakas",
-    "release_date": "YYYY-MM-DD",
-    "language": "kh or en"
+    "release_date": "2026-02-25",
+    "language": "kh"
+  },
+
+  "prakas_02": {
+    "document_name": "Prakas on the Conditions and Procedures for the Renewal, Suspension, and Termination of Insurance Contracts",
+    "document_type": "prakas",
+    "release_date": "2025-06-20",
+    "language": "kh"
+  },
+
+  "prakas_03": {
+    "document_name": "Prakas on the Formalities and Procedures for Imposing Sanctions on Persons Violating Laws or Regulatory Instruments in the Insurance Secto",
+    "document_type": "prakas",
+    "release_date": "2025-03-12",
+    "language": "kh"
+  },
+
+  "prakas_04": {
+    "document_name": "Prakas on the Recognition of Liquidators in the Insurance Sector",
+    "document_type": "prakas",
+    "release_date": "2025-03-12",
+    "language": "kh"
+  },
+
+  "prakas_05": {
+    "document_name": "Prakas on the Protection of Insurance Service Consumers",
+    "document_type": "prakas",
+    "release_date": "2025-03-12",
+    "language": "kh"
+  },
+
+  "prakas_06": {
+    "document_name": "Prakas on the Implementation of General Rules on the Management of Fire Insurance, Business Interruption Insurance, and Property Insurance against All Risks and Insurance Premium Rates",
+    "document_type": "prakas",
+    "release_date": "2025-03-12",
+    "language": "kh"
+  },
+
+  "prakas_07": {
+    "document_name": "Prakas on Rules and Guidelines for Reinsurance",
+    "document_type": "prakas",
+    "release_date": "2024-08-07",
+    "language": "kh"
+  },
+
+  "prakas_08": {
+    "document_name": "Prakas on the Formalities and Procedures for Conducting Insurance Inspections",
+    "document_type": "prakas",
+    "release_date": "2024-01-29",
+    "language": "kh"
+  },
+
+  "prakas_09": {
+    "document_name": "Prakas on Corporate Governance of Insurance Companies",
+    "document_type": "prakas",
+    "release_date": "2024-01-18",
+    "language": "kh"
+  },
+
+  "prakas_10": {
+    "document_name": "Prakas on the Recognition of Audit Service Providers in the Insurance Sector",
+    "document_type": "prakas",
+    "release_date": "2023-10-19",
+    "language": "kh"
+  },
+
+  "prakas_11": {
+    "document_name": "Prakas on General Requirements for Insurance Institutions, Actuarial Companies, and Insurance Claims Management Companies",
+    "document_type": "prakas",
+    "release_date": "2023-07-18",
+    "language": "kh"
+  },
+
+  "prakas_12": {
+    "document_name": "Prakas on the Procedures and Rules for Calculating Insurance Technical Reserves",
+    "document_type": "prakas",
+    "release_date": "2022-12-23",
+    "language": "kh"
+  },
+
+  "prakas_13": {
+    "document_name": "Prakas on the Conditions and Procedures for Licensing Insurance Intermediary Businesses",
+    "document_type": "prakas",
+    "release_date": "2022-12-14",
+    "language": "kh"
+  },
+
+  "prakas_14": {
+    "document_name": "Prakas on the Determination of Solvency Levels for Insurance Companies",
+    "document_type": "prakas",
+    "release_date": "2022-12-14",
+    "language": "kh"
+  },
+
+  "prakas_15": {
+    "document_name": "Prakas on the Conditions and Procedures for Licensing Insurance Business Support Service Businesses",
+    "document_type": "prakas",
+    "release_date": "2022-12-14",
+    "language": "kh"
+  },
+
+  "prakas_16": {
+    "document_name": "Prakas on Approval for Investments by Insurance Companies",
+    "document_type": "prakas",
+    "release_date": "2022-10-27",
+    "language": "kh"
+  },
+
+  "prakas_17": {
+    "document_name": "Prakas on Conditions and Procedures of the Registration in Individual Insurance Agent Register via Automation System",
+    "document_type": "prakas",
+    "release_date": "2022-10-27",
+    "language": "en"
+  },
+
+  "prakas_18": {
+    "document_name": "Prakas on Conditions and Procedures of Insurance Business Licensing",
+    "document_type": "prakas",
+    "release_date": "2022-06-01",
+    "language": "en"
+  },
+
+  "prakas_19": {
+    "document_name": "Prakas on Conditions for Banking and Financial Institutions to Conduct Bancassurance Business",
+    "document_type": "prakas",
+    "release_date": "2022-05-26",
+    "language": "kh"
+  },
+
+  "prakas_20": {
+    "document_name": "Prakas on the Organization and Functioning of Departments and Subordinate Units of the Insurance Regulator of Cambodia",
+    "document_type": "prakas",
+    "release_date": "2022-03-18",
+    "language": "kh"
+  },
+
+  "prakas_21": {
+    "document_name": "Prakas on Public Services of the Insurance Regulator of Cambodia",
+    "document_type": "prakas",
+    "release_date": "2022-03-11",
+    "language": "kh"
+  },
+
+  "prakas_22": {
+    "document_name": "Prakas on the Issuance of Government Securities",
+    "document_type": "prakas",
+    "release_date": "2022-03-09",
+    "language": "kh"
+  },
+
+  "prakas_23": {
+    "document_name": "Prakas on Procedure for Receiving and Resolving Insurance Complaints",
+    "document_type": "prakas",
+    "release_date": "2022-01-04",
+    "language": "en"
+  },
+
+  "prakas_24": {
+    "document_name": "Prakas on Accounting Guidelines",
+    "document_type": "prakas",
+    "release_date": "2021-11-08",
+    "language": "kh"
+  },
+
+  "prakas_25": {
+    "document_name": "Prakas on Licensing of Microinsurance Business",
+    "document_type": "prakas",
+    "release_date": "2021-11-02",
+    "language": "kh"
   }
 }
