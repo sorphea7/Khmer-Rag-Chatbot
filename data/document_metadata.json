@@ -55,10 +55,117 @@
   },
 
   "guidance_01": {
-    "document_name": "put file name here",
+    "document_name": "Guideline on the Receipt and Settlement of Insurance Claims for Microinsurance Companies",
     "document_type": "guidance",
-    "release_date": "YYYY-MM-DD",
-    "language": "kh or en"
+    "release_date": "2026-01-14",
+    "language": "kh"
+  },
+
+  "guidance_02": {
+    "document_name": "Instruction on Professional Training for Insurance Agents",
+    "document_type": "guidance",
+    "release_date": "2026-01-14",
+    "language": "kh"
+  },
+
+  "guidance_03": {
+    "document_name": "Instruction on the Implementation of Mortality Tables in the Insurance Sector",
+    "document_type": "guidance",
+    "release_date": "2025-05-06",
+    "language": "kh"
+  },
+
+   "guidance_04": {
+    "document_name": "Guideline on the Code of Ethics for Insurance Professionals",
+    "document_type": "guidance",
+    "release_date": "2024-12-10",
+    "language": "kh"
+  },
+
+  "guidance_05": {
+    "document_name": "Instruction on Minimum Principles for Microinsurance Contracts",
+    "document_type": "guidance",
+    "release_date": "2024-09-05",
+    "language": "kh"  
+  },
+
+  "guidance_06": {
+    "document_name": "Instruction on the Diversification of Reinsurance",
+    "document_type": "guidance",
+    "release_date": "2024-08-07",
+    "language": "kh"  
+  },
+
+  "guidance_07": {
+    "document_name": "Guideline on the Prevention of Insurance Fraud",
+    "document_type": "guidance",
+    "release_date": "2024-01-30",
+    "language": "kh"  
+  },
+
+  
+  "guidance_08": {
+    "document_name": "Instruction on the Required Solvency Guarantee Cash Account of Insurance Companies",
+    "document_type": "guidance",
+    "release_date": "2023-12-28",
+    "language": "kh"  
+  },
+
+  "guidance_09": {
+    "document_name": "Guideline on Advertising of Insurance Products",
+    "document_type": "guidance",
+    "release_date": "2023-12-06",
+    "language": "kh"  
+  },
+
+  "guidance_10": {
+    "document_name": "Guideline on the Insurance Technology Regulatory Sandbox",
+    "document_type": "guidance",
+    "release_date": "2023-10-17",
+    "language": "kh"  
+  },
+
+
+   "guidance_11": {
+    "document_name": "Instruction on the Code of Professional Ethics for Insurance Agents",
+    "document_type": "guidance",
+    "release_date": "2023-05-10",
+    "language": "kh"  
+  },
+
+  "guidance_12": {
+    "document_name": "Guideline on the Receipt and Settlement of Insurance Claims",
+    "document_type": "guidance",
+    "release_date": "2023-01-17",
+    "language": "kh"  
+  },
+
+  "guidance_13": {
+    "document_name": "Instruction on the Periodic Report Format to be Submitted by Insurance Brokerage Companies and Insurance Agency Companies",
+    "document_type": "guidance",
+    "release_date": "2022-12-21",
+    "language": "kh"  
+  },
+
+  "guidance_14": {
+    "document_name": " Instruction on Reporting the Freezing of Assets by Reporting Entities in the Insurance Sector ",
+    "document_type": "guidance",
+    "release_date": "2022-04-01",
+    "language": "kh"  
+  },
+
+   "guidance_15": {
+    "document_name": " Instruction on the Organization of Insurance Agent Training Courses ",
+    "document_type": "guidance",
+    "release_date": "2022-01-01",
+    "language": "kh"  
+  },
+
+  "guidance_16": {
+    "document_name": " Instruction on Minimum Principles for Insurance Contracts ",
+    "document_type": "guidance",
+    "release_date": "2022-01-01",
+    "language": "kh"  
   },
 
    "prakas_01": {
