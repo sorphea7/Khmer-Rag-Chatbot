@@ -5,17 +5,26 @@ from pathlib import Path
 from sentence_transformers import SentenceTransformer
 import time
 
-# Load embedding model
+# =====================================================
+# LOAD EMBEDDING MODEL
+# =====================================================
+
 model = SentenceTransformer(
     "paraphrase-multilingual-MiniLM-L12-v2"
 )
 
-# Root chunk folder
+# =====================================================
+# ROOT CHUNK FOLDER
+# =====================================================
+
 input_root = Path(
-    "data/chunked_documents/laws"
+    "data/chunked_documents"
 )
 
-# Output vector DB folder
+# =====================================================
+# OUTPUT VECTOR DB FOLDER
+# =====================================================
+
 output_root = Path(
     "vector_db"
 )
@@ -25,40 +34,75 @@ output_root.mkdir(
     exist_ok=True
 )
 
-# Find ALL chunk JSON files
+# =====================================================
+# FIND ALL CHUNK FILES RECURSIVELY
+# =====================================================
+
 chunk_files = sorted(
-    input_root.glob("*_chunks.json")
+    input_root.rglob("*_chunks.json")
 )
 
-# Store all chunks
+# =====================================================
+# STORE ALL CHUNKS
+# =====================================================
+
 all_chunks = []
 
-# Runtime
+# =====================================================
+# TOTAL RUNTIME
+# =====================================================
+
 start_time = time.time()
 
 print("Loading chunk files...")
 
-# Load all chunk files
+# =====================================================
+# LOAD ALL CHUNK FILES
+# =====================================================
+
 for chunk_path in chunk_files:
 
-    print(f"Loading: {chunk_path.name}")
+    print(
+        f"Loading: "
+        f"{chunk_path.relative_to(input_root)}"
+    )
 
-    with open(
-        chunk_path,
-        "r",
-        encoding="utf-8"
-    ) as f:
+    try:
 
-        chunks = json.load(f)
+        with open(
+            chunk_path,
+            "r",
+            encoding="utf-8"
+        ) as f:
 
-        all_chunks.extend(chunks)
+            chunks = json.load(f)
+
+            all_chunks.extend(chunks)
+
+    except Exception as e:
+
+        print(
+            f"Skipping broken chunk file: "
+            f"{chunk_path.name}"
+        )
+
+        print(e)
+
+        continue
+
+# =====================================================
+# TOTAL CHUNKS
+# =====================================================
 
 print(
     f"\nTotal chunks loaded: "
     f"{len(all_chunks)}"
 )
 
-# Extract text only
+# =====================================================
+# EXTRACT TEXT ONLY
+# =====================================================
+
 texts = [
     chunk["text"]
     for chunk in all_chunks
@@ -66,37 +110,54 @@ texts = [
 
 print("\nGenerating embeddings...")
 
-# Generate embeddings
+# =====================================================
+# GENERATE EMBEDDINGS
+# =====================================================
+
 embeddings = model.encode(
     texts,
     show_progress_bar=True
 )
 
-# Convert to numpy float32
+# =====================================================
+# CONVERT TO NUMPY FLOAT32
+# =====================================================
+
 embeddings = np.array(
     embeddings
 ).astype("float32")
 
-# Create FAISS index
+# =====================================================
+# CREATE FAISS INDEX
+# =====================================================
+
 dimension = embeddings.shape[1]
 
-index = faiss.IndexFlatL2(dimension)
+index = faiss.IndexFlatL2(
+    dimension
+)
 
-# Add embeddings to index
-index.add(embeddings)
+# =====================================================
+# ADD EMBEDDINGS TO INDEX
+# =====================================================
+
+index.add(
+    embeddings
+)
 
 print(
     f"\nFAISS index size: "
     f"{index.ntotal}"
 )
 
-# -----------------------------
+# =====================================================
 # SAVE VECTOR DATABASE
-# -----------------------------
+# =====================================================
 
 # Save FAISS index
 faiss_output = (
-    output_root / "law_01.index"
+    output_root /
+    "khmer_insurance.index"
 )
 
 faiss.write_index(
@@ -104,9 +165,13 @@ faiss.write_index(
     str(faiss_output)
 )
 
-# Save metadata
+# =====================================================
+# SAVE METADATA
+# =====================================================
+
 metadata_output = (
-    output_root / "law_01_metadata.json"
+    output_root /
+    "khmer_insurance_metadata.json"
 )
 
 with open(
@@ -122,10 +187,17 @@ with open(
         indent=2
     )
 
-# Total runtime
+# =====================================================
+# TOTAL RUNTIME
+# =====================================================
+
 elapsed_time = (
     time.time() - start_time
 )
+
+# =====================================================
+# SUMMARY
+# =====================================================
 
 print("\n========== SUMMARY ==========")
 
