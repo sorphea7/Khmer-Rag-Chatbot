@@ -46,14 +46,14 @@ def load_embedding_model():
 def load_faiss_index():
 
     return faiss.read_index(
-        "vector_db/law_01.index"
+        "vector_db/khmer_insurance.index"
     )
 
 @st.cache_resource
 def load_metadata():
 
     with open(
-        "vector_db/law_01_metadata.json",
+        "vector_db/khmer_insurance_metadata.json",
         "r",
         encoding="utf-8"
     ) as f:
