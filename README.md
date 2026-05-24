@@ -380,7 +380,7 @@ Used for:
 Run from any directory where you want the project folder to be created.
 
 ```bash
-git clone https://github.com/sorphea7/Khmer-Rag-Insurance-Chatbot.git
+git clone https://github.com/sorphea7/Khmer-Rag-Chatbot.git
 cd Khmer-Rag-Insurance-Chatbot
 ```
 
